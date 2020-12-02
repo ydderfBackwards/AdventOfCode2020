@@ -17,7 +17,7 @@ namespace AdventOfCode2020
 
             //Call Day solution
             var aoc = new Day01();
-            bool testMode = true;
+            bool testMode = false;
 
             result1 = aoc.SolvePart1(aoc.GetInput(testMode));
             result2 = aoc.SolvePart2(aoc.GetInput(testMode));
