@@ -15,9 +15,11 @@ namespace AdventOfCode2020
             string result2 = "";
             
 
+
+
             //Call Day solution
-            var aoc = new Day01();
-            bool testMode = false;
+            var aoc = new Day03(); //Change day number for correct day
+            bool testMode = false; //False for running with real input. True for running with example input
 
             result1 = aoc.SolvePart1(aoc.GetInput(testMode));
             result2 = aoc.SolvePart2(aoc.GetInput(testMode));
