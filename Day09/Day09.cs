@@ -11,17 +11,8 @@ namespace AdventOfCode2020
         public string SolvePart1(string input)
         {
 
-            //Convert input to array of integers.
-            string[] lines = input.Split(Environment.NewLine);
-            long[] dataStream = new long[lines.Length];
-            int i = 0;
-
-            //Read input and write to array
-            foreach (string line in lines)
-            {
-                dataStream[i] = long.Parse(line);
-                i++;
-            }
+            //Convert input to array of long.
+            long[] dataStream = Array.ConvertAll(input.Split(Environment.NewLine), long.Parse);
 
             return AttackXMAS(dataStream).ToString();
         }
@@ -30,18 +21,10 @@ namespace AdventOfCode2020
 
         public string SolvePart2(string input)
         {
-            //Convert input to array of integers.
-            string[] lines = input.Split(Environment.NewLine);
-            long[] dataStream = new long[lines.Length];
-            int i = 0;
+            //Convert input to array of long.
+            long[] dataStream = Array.ConvertAll(input.Split(Environment.NewLine), long.Parse);
 
-            //Read input and write to array
-            foreach (string line in lines)
-            {
-                dataStream[i] = long.Parse(line);
-                i++;
-            }
-
+            //Get invalid number (result part 1)
             long invalidNr = AttackXMAS(dataStream);
 
             long weakness = FindEncryptionWeakness(invalidNr, dataStream);
