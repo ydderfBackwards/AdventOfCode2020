@@ -23,11 +23,10 @@ namespace AdventOfCode2020
                 i++;
             }
 
-
             return AttackXMAS(dataStream).ToString();
         }
 
-   
+
 
         public string SolvePart2(string input)
         {
@@ -51,25 +50,20 @@ namespace AdventOfCode2020
 
         }
 
-     public long AttackXMAS(long[] dataStream)
+        public long AttackXMAS(long[] dataStream)
         {
             long checkNumber = 0;
             int preambleSize = 25; //5 for test input, 25 for real input!
             long[] preambleData = new long[preambleSize];
             int i = 0;
 
-            
+
             for (i = preambleSize; i < dataStream.Length - preambleSize; i++)
             {
-                //Copy the number who should contain a valid set of number to a temp array
+                //Copy the numbers who should contain a valid set of numbers to a temp array
                 Array.Copy(dataStream, i - preambleSize, preambleData, 0, preambleSize);
 
-                if (!NrIsValid(dataStream[i], preambleData))
-                {
-                    break;
-                }
-
-
+                if (!NrIsValid(dataStream[i], preambleData)) { break; }
             }
 
             checkNumber = dataStream[i];
@@ -83,16 +77,14 @@ namespace AdventOfCode2020
 
             bool valid = false;
 
-            foreach(long number in preambleData)
+            foreach (long number in preambleData)
             {
-                if(preambleData.Contains((checkNumber-number)))
+                if (preambleData.Contains((checkNumber - number)))
                 {
                     valid = true;
+                    break;
                 }
             }
-
-            
-
             return valid;
         }
 
@@ -100,46 +92,24 @@ namespace AdventOfCode2020
         {
             long result = 0;
             long sum = 0;
-            int i=0, j=0;
+            int i = 0, j = 0;
 
-            //Find datarange whera all numbers add up to InvalidNumber
-            for( i=0; i < dataStream.Length; i++)
+            //Find datarange where all numbers add up to InvalidNumber
+            for (i = 0; i < dataStream.Length; i++)
             {
                 sum = 0;
-                j=i;
-                while( sum < InvalidNumber)
+                j = i;
+                while (sum < InvalidNumber)
                 {
                     sum += dataStream[j];
                     j++;
-
                 }
 
-                if( sum == InvalidNumber)
-                {
-                    break;
-                }
+                if (sum == InvalidNumber) { break; }
             }
 
-            //Find min and max in data range
-            long min = 999999999;
-            long max = 0;
-
-            for(int k=i; k <=j; k++)
-            {
-                if(dataStream[k] < min)
-                {
-                    min = dataStream[k];
-                }
-            
-            
-                if(dataStream[k] > max)
-                {
-                    max = dataStream[k];
-                }
-            
-            }
-
-            result = min + max;
+            //Find min and max in data range and add them
+            result = dataStream[i..j].Min() + dataStream[i..j].Max();
 
             return result;
 
