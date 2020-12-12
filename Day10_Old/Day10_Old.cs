@@ -6,7 +6,7 @@ using System.Text.RegularExpressions; // For regex
 
 namespace AdventOfCode2020
 {
-    public class Day10
+    public class Day10_Old
     {
         public string SolvePart1(string input)
         {
@@ -21,6 +21,7 @@ namespace AdventOfCode2020
             int countDiff3 = CountAdaptersInChain(3, joltages);
             int result = countDiff1 * countDiff3;
 
+
             return result.ToString();
         }
 
@@ -34,57 +35,59 @@ namespace AdventOfCode2020
             //Sort array
             Array.Sort(joltages);
 
-            double result = NrOfWaysToOutlet(joltages);
+            //long result = NrOfWaysToOutlet_SLOW(0, joltages);
+            int result = NrOfWaysToOutlet(joltages);
             return result.ToString();
 
         }
 
-        public double NrOfWaysToOutlet(int[] joltages)
+    public int NrOfWaysToOutlet(int[] joltages)
+    {
+        long[] groupOfOnes = new long[10];
+        int count = 0;
+        long nrOfOnes = 0;
+
+
+        for(int i = 0; i<joltages.Length-1; i++)
         {
-            List<int> commonPoints = new List<int>();
-            double count = 1;
-
-            int i;
-
-            //Find positions where every route has to pass (difference with next is 3)
-            for (i = 0; i < joltages.Length - 1; i++)
+            if(joltages[i+1] - joltages[i] == 1)
             {
-                if (joltages[i + 1] - joltages[i] == 3)
-                {
-                    commonPoints.Add(i + 1);
-                }
-
+                nrOfOnes++;
             }
-
-            commonPoints.Add(i + 1);
-
-            int fromPos = 0;
-            int toPos = 0;
-
-            //Calculate number of routes from point to point and multiply the results
-            foreach (int commonPoint in commonPoints)
+            else
             {
-                toPos = commonPoint;
-                count = count * NrOfWaysPointToPoint(fromPos, toPos, joltages);
-                fromPos = toPos;
+                groupOfOnes[nrOfOnes]++;
+                nrOfOnes = 0;
             }
-
-
-            return count;
-
-
         }
 
+        groupOfOnes[nrOfOnes]++; //For the last group at the end of the array
+ 
 
-        public double NrOfWaysPointToPoint(int posStart, int posStop, int[] joltages)
+        Console.Write("The awnser for part 2 is: ");
+        Console.Write("2^{0} * ", groupOfOnes[2]);      //Two ones after eachother --> You have two options (5,6,7 --> 5,6,7 or 5,7)
+        Console.Write("4^{0} * ", groupOfOnes[3]);      //Three ones after eachother --> You have four options (5,6,7,8 --> 5,6,7,8 or 5,6,8 or 5,7,8 or 5,8)
+        Console.WriteLine("7^{0}", groupOfOnes[4]);     //Four ones after eachother --> You have seven options
+
+        
+        Console.WriteLine("TODO: Calculate and return awnser without overflow......");
+ 
+
+        return count;
+
+
+    }
+
+
+        public long NrOfWaysToOutlet_SLOW(int pos, int[] joltages)
         {
             //Takes very long with real input. After more than one hour aborted the function.....
             //Both test input work fine.....
-            double count = 0;
-            int nextPosMin = posStart + 1;
-            int nextPosMax = posStart + 4;
+            long count = 0;
+            int nextPosMin = pos + 1;
+            int nextPosMax = pos + 4;
 
-
+            
 
             //Limit search area to array size
             if (nextPosMax > joltages.Length)
@@ -93,31 +96,34 @@ namespace AdventOfCode2020
             }
 
             //Check if we reached the outlet
-            if (nextPosMin >= posStop)
+            if (nextPosMin >= joltages.Length)
             {
                 //This is the endpoint (outlet)
-
+                
                 count++;
             }
             else
             {
                 //Check if we can make a step with difference 1 
-                if (joltages[nextPosMin..nextPosMax].Contains(joltages[posStart] + 1))
+                if (joltages[nextPosMin..nextPosMax].Contains(joltages[pos] + 1))
                 {
-                    count += NrOfWaysPointToPoint(Array.IndexOf(joltages, joltages[posStart] + 1), posStop, joltages);
+                    count += NrOfWaysToOutlet_SLOW(Array.IndexOf(joltages, joltages[pos] + 1), joltages);
                 }
 
                 //Check if we can make a step with difference 2
-                if (joltages[nextPosMin..nextPosMax].Contains(joltages[posStart] + 2))
+                if (joltages[nextPosMin..nextPosMax].Contains(joltages[pos] + 2))
                 {
-                    count += NrOfWaysPointToPoint(Array.IndexOf(joltages, joltages[posStart] + 2), posStop, joltages);
+                    count += NrOfWaysToOutlet_SLOW(Array.IndexOf(joltages, joltages[pos] + 2), joltages);
                 }
                 //Check if we can make a step with difference 3
-                if (joltages[nextPosMin..nextPosMax].Contains(joltages[posStart] + 3))
+                if (joltages[nextPosMin..nextPosMax].Contains(joltages[pos] + 3))
                 {
-                    count += NrOfWaysPointToPoint(Array.IndexOf(joltages, joltages[posStart] + 3), posStop, joltages);
+                    count += NrOfWaysToOutlet_SLOW(Array.IndexOf(joltages, joltages[pos] + 3), joltages);
                 }
             }
+
+
+
 
             return count;
 
