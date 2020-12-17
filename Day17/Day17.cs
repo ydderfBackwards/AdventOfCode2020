@@ -17,8 +17,8 @@ namespace AdventOfCode2020
 
             int x, y, z;
             int maxSizeX = (cycleSetpoint * 2) + lines[0].Length;
-            int maxSizeY = (cycleSetpoint * 2) + lines.Length ;
-            int maxSizeZ = (cycleSetpoint * 2) + 3 ;
+            int maxSizeY = (cycleSetpoint * 2) + lines.Length;
+            int maxSizeZ = (cycleSetpoint * 2) + 3;
             int centerX = maxSizeX / 2;
             int centerY = maxSizeY / 2;
             int centerZ = maxSizeZ / 2;
@@ -64,7 +64,6 @@ namespace AdventOfCode2020
                 //Copy array
                 for (z = 0; z < maxSizeZ; z++)
                 {
-
                     for (y = 0; y < maxSizeY; y++)
                     {
                         for (x = 0; x < maxSizeX; x++)
@@ -98,17 +97,8 @@ namespace AdventOfCode2020
 
 
             //************** Count number active cubes ************
-            long totalActive = 0;
-            for (z = 0; z < maxSizeZ; z++)
-            {
-                for (y = 0; y < maxSizeY; y++)
-                {
-                    for (x = 0; x < maxSizeX; x++)
-                    {
-                        totalActive += cubes[x, y, z];
-                    }
-                }
-            }
+            long totalActive = cubes.Cast<int>().Sum();
+
 
             // //************** Print input ************
             // for (y = 0; y < maxSizeY; y++)
@@ -121,6 +111,8 @@ namespace AdventOfCode2020
             // }
 
             // Console.WriteLine("---------------------------");
+
+
             return totalActive.ToString();
         }
 
@@ -140,7 +132,7 @@ namespace AdventOfCode2020
                 }
             }
 
-            count -= cubes[xCheck, yCheck, zCheck];
+            count -= cubes[xCheck, yCheck, zCheck]; 
 
             return count;
         }
@@ -242,20 +234,7 @@ namespace AdventOfCode2020
 
 
             //************** Count number active cubes ************
-            long totalActive = 0;
-            for (w = 0; w < maxSizeW; w++)
-            {
-                for (z = 0; z < maxSizeZ; z++)
-                {
-                    for (y = 0; y < maxSizeY; y++)
-                    {
-                        for (x = 0; x < maxSizeX; x++)
-                        {
-                            totalActive += cubes[x, y, z, w];
-                        }
-                    }
-                }
-            }
+            long totalActive = cubes.Cast<int>().Sum();
 
             // //************** Print input ************
             // for (y = 0; y < maxSizeY; y++)
