@@ -16,9 +16,9 @@ namespace AdventOfCode2020
             string[] lines = input.Split(Environment.NewLine);
 
             int x, y, z;
-            int maxSizeX = (cycleSetpoint * 2) + lines[0].Length + 10;
-            int maxSizeY = (cycleSetpoint * 2) + lines.Length + 10;
-            int maxSizeZ = (cycleSetpoint * 2) + 3 + 10;
+            int maxSizeX = (cycleSetpoint * 2) + lines[0].Length;
+            int maxSizeY = (cycleSetpoint * 2) + lines.Length ;
+            int maxSizeZ = (cycleSetpoint * 2) + 3 ;
             int centerX = maxSizeX / 2;
             int centerY = maxSizeY / 2;
             int centerZ = maxSizeZ / 2;
