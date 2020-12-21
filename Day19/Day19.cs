@@ -36,7 +36,7 @@ namespace AdventOfCode2020
             int count = 0;
             foreach (string line in checkLines)
             {
-                if (rules.Any(x => x == line))
+                if (rules.Any(x => x.Equals(line)))
                 {
                     count++;
                 }
@@ -63,12 +63,12 @@ namespace AdventOfCode2020
                 {
                     // foreach (string rule2 in ruleZeroList[2])
                     // {
-                        string rule = rule0 + rule1;// + rule2;
-                        rulesTotal.Add(rule);
+                    string rule = rule0 + rule1;// + rule2;
+                    rulesTotal.Add(rule);
                     // }
                 }
             }
-             List<string> distinct = rulesTotal.Distinct().ToList();
+            List<string> distinct = rulesTotal.Distinct().ToList();
 
             return distinct;
         }
@@ -125,9 +125,10 @@ namespace AdventOfCode2020
 
                 }
 
+
                 foreach (string tmp0 in tmpList10)
                 {
-                    if (tmpList10.Count > 0)
+                    if (tmpList11.Count > 0)
                     {
                         foreach (string tmp1 in tmpList11)
                         {
@@ -141,6 +142,8 @@ namespace AdventOfCode2020
                     }
 
                 }
+
+
             }
 
             return ruleList;
@@ -167,7 +170,7 @@ namespace AdventOfCode2020
 
                 if (data[0].Equals("0"))
                 {
-                    ruleZero = data[1];
+                    ruleZero = data[1].Trim();
                 }
                 else
                 {
@@ -206,7 +209,7 @@ namespace AdventOfCode2020
             public string[] option2;
         }
 
-       
+
 
         public string GetInput(bool testInput)
         {
