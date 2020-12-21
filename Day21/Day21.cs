@@ -24,22 +24,24 @@ namespace AdventOfCode2020
         {
             var (ingredients, allergens, foods) = ReadInput(input);
             var allergenIngredients = FindAllergenIngredients(ingredients, allergens, foods);
-           var result = CreateIngredientString(allergenIngredients);
+            var result = CreateIngredientString(allergenIngredients);
 
             return result;
         }
 
         public string CreateIngredientString(Dictionary<string, string> allergenIngredients)
         {
-            string result = "";
+            //***** My old solution ****//
+            // string result = "";
+            // foreach (var ingredient in allergenIngredients)
+            // {
+            //     result += ingredient.Key;
+            //     result += ",";
+            // }
+            // result = result.Substring(0, result.Length - 1); //Remove last ","
 
-            foreach (var ingredient in allergenIngredients)
-            {
-                result += ingredient.Key;
-                result += ",";
-            }
-
-            result = result.Substring(0, result.Length - 1); //Remove last ","
+            //***** Solution found in solution of Tweakers.net user Woy ****//
+            string result = string.Join(",", allergenIngredients.Select(x => x.Key));
 
             return result;
         }
