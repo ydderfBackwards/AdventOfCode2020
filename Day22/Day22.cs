@@ -12,7 +12,6 @@ namespace AdventOfCode2020
         {
             var (deckP1, deckP2) = ReadDecks(input);
             int score = PlayCombat(deckP1, deckP2);
-
             return score.ToString();
         }
 
@@ -20,110 +19,31 @@ namespace AdventOfCode2020
         public string SolvePart2(string input)
         {
             var (deckP1, deckP2) = ReadDecks(input);
-            int score = PlayRecursiveCombat(deckP1, deckP2);
-            return score.ToString();
-
+            var (scoreP1, scoreP2) = PlayRecursiveCombat(deckP1, deckP2);
+            return (scoreP1+scoreP2).ToString();
         }
 
-        public string DeckToString(List<int> deck)
+   
+        public (int, int) PlayRecursiveCombat(List<int> deckP1, List<int> deckP2)
         {
-            string total = "";
-
-            foreach (int card in deck)
-            {
-                total += card.ToString("D2");
-            }
-
-            return total;
-        }
-
-        public bool PlaySubCombat(List<int> deckP1Org, List<int> deckP2Org)
-        {
-            bool p1Wins = false;
+            int scoreP1 = 0, scoreP2 = 0;
             int cardP1 = 0, cardP2 = 0;
-            List<string> playedDecksP1 = new List<string>();
-            List<string> playedDecksP2 = new List<string>();
-            List<int> deckP1 = new List<int>(deckP1Org);
-            List<int> deckP2 = new List<int>(deckP2Org);
-
-            string currentDeckP1 = "", currentDeckP2 = "";
-
-            while (deckP1.Count > 0 && deckP2.Count > 0)
-            {
-                currentDeckP1 = DeckToString(deckP1);
-                currentDeckP2 = DeckToString(deckP2);
-
-                //Check if both decks have been used before
-                if (playedDecksP1.FindIndex(p1 => p1.Equals(currentDeckP1)) == playedDecksP2.FindIndex(p2 => p2.Equals(currentDeckP2)) && playedDecksP1.FindIndex(p1 => p1.Equals(currentDeckP1)) >= 0)
-                {
-                    //Both decks have been used before -> Player 1 wins always
-                    p1Wins = true;
-                    return p1Wins;
-                }
-
-                //Remember played deck
-                playedDecksP1.Add(currentDeckP1);
-                playedDecksP2.Add(currentDeckP2);
-
-                //Draw cards
-                cardP1 = deckP1.First();
-                cardP2 = deckP2.First();
-
-                //Check if they have enough cards to play sub game
-                if (deckP1.Count > cardP1 && deckP2.Count > cardP2)
-                {
-                    List<int> subDeckP1 = deckP1.GetRange(1, cardP1);
-                    List<int> subDeckP2 = deckP2.GetRange(1, cardP2);
-
-                    if (PlaySubCombat(subDeckP1, subDeckP2))
-                    {
-                        //Player 1 wins.
-                        deckP1.Add(cardP1);
-                        deckP1.Add(cardP2);
-                    }
-                    else
-                    {
-                        //Player 2 wins.
-                        deckP2.Add(cardP2);
-                        deckP2.Add(cardP1);
-                    }
-                }
-                else
-                {
-                    //play normal game
-                    if (cardP1 > cardP2)
-                    {
-                        //Player 1 wins.
-                        deckP1.Add(cardP1);
-                        deckP1.Add(cardP2);
-                    }
-                    else
-                    {
-                        //Player 2 wins.
-                        deckP2.Add(cardP2);
-                        deckP2.Add(cardP1);
-                    }
-                }
-                //Remove played cards
-                deckP1.RemoveAt(0);
-                deckP2.RemoveAt(0);
-            }
-
-            //****** Game is finished --> Determine winner ******//
-            if (deckP1.Count > 0) { p1Wins = true; }
-            else { p1Wins = false; }
-
-            return p1Wins;
-        }
-
-        public int PlayRecursiveCombat(List<int> deckP1, List<int> deckP2)
-        {
-            int score = 0;
-            int cardP1 = 0, cardP2 = 0;
+            List<string> playedDecks = new List<string>();
 
             //While both players have 1 or more cards
             while (deckP1.Count > 0 && deckP2.Count > 0)
             {
+                string currentDecks = DecksToString(deckP1, deckP2);
+
+                //Check if both decks have been used before
+                if (playedDecks.Any(d => d.Equals(currentDecks)))
+                {
+                    //Both decks have been used before -> Player 1 wins always
+                    return (999, 0); //Score doesn't matter....
+                }
+
+                //Remember played decks
+                playedDecks.Add(currentDecks);
                 //Draw cards
                 cardP1 = deckP1.First();
                 cardP2 = deckP2.First();
@@ -136,7 +56,8 @@ namespace AdventOfCode2020
                     List<int> subDeckP2 = deckP2.GetRange(1, cardP2);
 
                     //Play sub combat
-                    if (PlaySubCombat(subDeckP1, subDeckP2))
+                    var( subScoreP1, subScoreP2) = PlayRecursiveCombat (subDeckP1, subDeckP2);
+                    if (subScoreP1 > subScoreP2)
                     {
                         //Player 1 wins.
                         deckP1.Add(cardP1);
@@ -172,33 +93,33 @@ namespace AdventOfCode2020
             }
 
 
-            //****** Game is finished --> Count score ******//
-            if (deckP1.Count() > deckP2.Count())
+            //****** Game is finished --> Count scores ******//
+            //We can count always for both player, because the loser has no cards, so he gets no point
+
+            //Player 1 
+            int cardValue = deckP1.Count();
+            foreach (int card in deckP1)
             {
-                //Player 1 has won
-                int cardValue = deckP1.Count();
-                foreach (int card in deckP1)
-                {
-                    score += (card * cardValue);
-                    cardValue--;
-                }
-            }
-            else
-            {
-                //Player 2 has won
-                int cardValue = deckP2.Count();
-                foreach (int card in deckP2)
-                {
-                    score += (card * cardValue);
-                    cardValue--;
-                }
+                scoreP1 += (card * cardValue);
+                cardValue--;
             }
 
+            //Player 2
+            cardValue = deckP2.Count();
+            foreach (int card in deckP2)
+            {
+                scoreP2 += (card * cardValue);
+                cardValue--;
+            }
 
-            return score;
+            return (scoreP1, scoreP2);
         }
 
-
+        public string DecksToString(List<int> deckP1, List<int> deckP2)
+        {
+            string total = String.Join(",", deckP1) + String.Join(",", deckP2);
+            return total;
+        }
 
         public int PlayCombat(List<int> deckP1, List<int> deckP2)
         {
