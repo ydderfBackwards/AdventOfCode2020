@@ -20,30 +20,36 @@ namespace AdventOfCode2020
         {
             var (deckP1, deckP2) = ReadDecks(input);
             var (scoreP1, scoreP2) = PlayRecursiveCombat(deckP1, deckP2);
-            return (scoreP1+scoreP2).ToString();
+            return (scoreP1 + scoreP2).ToString();
         }
 
-   
+
         public (int, int) PlayRecursiveCombat(List<int> deckP1, List<int> deckP2)
         {
             int scoreP1 = 0, scoreP2 = 0;
             int cardP1 = 0, cardP2 = 0;
-            List<string> playedDecks = new List<string>();
+        
+            List<string> playedDeckP1 = new List<string>();
+            List<string> playedDeckP2 = new List<string>();
 
             //While both players have 1 or more cards
             while (deckP1.Count > 0 && deckP2.Count > 0)
             {
-                string currentDecks = DecksToString(deckP1, deckP2);
+                //string currentDecks = DecksToString(deckP1, deckP2);
+                string currentDeckP1 = DeckToString(deckP1);
+                string currentDeckP2 = DeckToString(deckP2);
 
                 //Check if both decks have been used before
-                if (playedDecks.Any(d => d.Equals(currentDecks)))
+                if (playedDeckP1.Any(d => d.Equals(currentDeckP1)) || playedDeckP2.Any(d => d.Equals(currentDeckP2)))
                 {
                     //Both decks have been used before -> Player 1 wins always
                     return (999, 0); //Score doesn't matter....
                 }
 
                 //Remember played decks
-                playedDecks.Add(currentDecks);
+                playedDeckP1.Add(currentDeckP1);
+                playedDeckP2.Add(currentDeckP2);
+     
                 //Draw cards
                 cardP1 = deckP1.First();
                 cardP2 = deckP2.First();
@@ -56,7 +62,7 @@ namespace AdventOfCode2020
                     List<int> subDeckP2 = deckP2.GetRange(1, cardP2);
 
                     //Play sub combat
-                    var( subScoreP1, subScoreP2) = PlayRecursiveCombat (subDeckP1, subDeckP2);
+                    var (subScoreP1, subScoreP2) = PlayRecursiveCombat(subDeckP1, subDeckP2);
                     if (subScoreP1 > subScoreP2)
                     {
                         //Player 1 wins.
@@ -118,6 +124,12 @@ namespace AdventOfCode2020
         public string DecksToString(List<int> deckP1, List<int> deckP2)
         {
             string total = String.Join(",", deckP1) + String.Join(",", deckP2);
+            return total;
+        }
+
+        public string DeckToString(List<int> deck)
+        {
+            string total = String.Join(",", deck) ;
             return total;
         }
 
