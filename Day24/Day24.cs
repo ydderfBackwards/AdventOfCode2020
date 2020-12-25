@@ -11,8 +11,8 @@ namespace AdventOfCode2020
         public string SolvePart1(string input)
         {
             var directionsTiles = ReadInput(input);
-            var tiles = PlaceBlackTiles(directionsTiles);
-            int nrBlackTiles = tiles.Count();
+            var blackTiles = PlaceBlackTiles(directionsTiles);
+            int nrBlackTiles = blackTiles.Count();
 
             return nrBlackTiles.ToString();
         }
