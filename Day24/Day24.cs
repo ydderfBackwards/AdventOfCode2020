@@ -58,7 +58,7 @@ namespace AdventOfCode2020
                     {
                         if (nrAdjBlack == 0 || nrAdjBlack > 2)
                         {
-                            //Tile is black but will be flipped to white (no action because we only save the black tiles)
+                            //Tile is black but will be flipped to white 
                             Location newBlackTile = new Location();
                             newBlackTile.x = x;
                             newBlackTile.y = y;
@@ -67,7 +67,7 @@ namespace AdventOfCode2020
                     }
                     else
                     {
-                        //If white tile with to black adjacent --> flip to black
+                        //If white tile with two black adjacent --> flip to black
                         if (nrAdjBlack == 2)
                         {
                             Location newBlackTile = new Location();
