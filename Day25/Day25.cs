@@ -18,13 +18,21 @@ namespace AdventOfCode2020
             var loopSizeCard = GetLoopSize(cardKey);
             var loopSizeDoor = GetLoopSize(doorKey);
 
-            var encriptionKey = GetEncriptionKey(doorKey, loopSizeCard);
+            var encryptionKeyDoor = GetEncryptionKey(doorKey, loopSizeCard);
+            var encryptionKeyCard = GetEncryptionKey(cardKey, loopSizeDoor);
 
-            return encriptionKey.ToString();
+            if (encryptionKeyCard == encryptionKeyDoor)
+            {
+                return encryptionKeyCard.ToString();
+            }
+            else
+            {
+                return "Error during decrypting!" ;
+            }
         }
 
 
-        public long GetEncriptionKey(long key, long loopSize)
+        public long GetEncryptionKey(long key, long loopSize)
         {
             long value = 1;
             long divValue = 20201227;
