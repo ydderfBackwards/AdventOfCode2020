@@ -191,13 +191,6 @@ namespace AdventOfCode2020
             public int y;
         }
 
-        public struct Tile
-        {
-            public int x;
-            public int y;
-            public bool black;
-        }
-
         public string GetInput(bool testInput)
         {
             var myInput = new Inputs.Day24();
