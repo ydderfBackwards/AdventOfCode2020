@@ -28,7 +28,7 @@ namespace AdventOfCode2020
             }
 
             int nrBlackTiles = blackTiles.Count();
-            Console.WriteLine(nrBlackTiles);
+            
             return nrBlackTiles.ToString();
 
         }
